@@ -4,7 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../localization/locales.dart';
 import '../models/Interfaces.dart';
-import '../widghets/HomeBottomNavBar.dart';
+import '../widghets/widgets_home/HomeBottomNavBar.dart';
 import '../widghets/components/ForwardIcon.dart';
 import '../widghets/components/SettingItems.dart';
 

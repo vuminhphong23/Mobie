@@ -7,10 +7,10 @@ import 'package:qly_ban_hang/pages/LoginPage.dart';
 
 
 import 'localization/locales.dart';
-import 'pages/Orders/chitiet_hoadon.dart';
 import 'pages/Orders/quanly_hoadon.dart';
 import 'pages/ProductPage.dart';
 import 'pages/SettingPage.dart';
+
 
 
 
@@ -52,9 +52,9 @@ class _MyAppState extends State<MyApp> {
         "/": (context) => LoginPage(),
         "homePage": (context) => HomePage(),
         "settingPage": (context) => SettingsPage(),
-        "productPage": (context) => ProductPage(),
+        "productPage": (context) => ProductView(),
         "orderPage": (context) => QuanLyHoaDon(),
-        "orderDetail": (context) => ChiTietHoaDon(),
+        // "orderDetail": (context) => ChiTietHoaDon(),
       },
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,

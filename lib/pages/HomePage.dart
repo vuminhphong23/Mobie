@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:qly_ban_hang/localization/locales.dart';
-import 'package:qly_ban_hang/widghets/HomeBottomNavBar.dart';
+import 'package:qly_ban_hang/widghets/widgets_home/HomeBottomNavBar.dart';
 import 'package:qly_ban_hang/widghets/components/MyDrawer.dart';
 
-import '../widghets/AutoImageSlider.dart';
-import '../widghets/RecentItemsWidget.dart';
-import '../widghets/RowItemsWidget.dart';
+import '../widghets/widgets_home/AutoImageSlider.dart';
+import '../widghets/widgets_home/RecentItemsWidget.dart';
+import '../widghets/widgets_home/RowItemsWidget.dart';
 
 class HomePage extends StatefulWidget {
   @override

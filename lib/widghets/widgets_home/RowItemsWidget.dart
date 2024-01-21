@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
-import '../localization/locales.dart';
+import '../../localization/locales.dart';
+
+
 
 class RowItemsWidget extends StatelessWidget {
   @override

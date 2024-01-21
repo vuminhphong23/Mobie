@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+
+import '../../localization/locales.dart';
+import '../../widghets/widgets_home/HomeBottomNavBar.dart';
 
 class ChiTietHoaDon  extends StatelessWidget {
+
+  final String maHD;
+  final String tongTien;
+  final DateTime ngayBan;
+  final String name;
+
+  ChiTietHoaDon({
+    required this.maHD,
+    required this.tongTien,
+    required this.ngayBan,
+    required this.name,
+  });
+
+  double parseAmount(String amountString) {
+    amountString = amountString.replaceAll('\$', '');
+    return double.parse(amountString);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Order Details',
+          LocaleData.orderDetail.getString(context),
           style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold) ,
         ),
         backgroundColor: Color(0xFF475269),
@@ -26,26 +47,23 @@ class ChiTietHoaDon  extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // Row 1
                 Row(
                   children: [
                     Icon(Icons.shopping_cart),
                     SizedBox(width: 8.0),
-                    Text('Mặt hàng đã chọn'),
+                    Text(LocaleData.selectedItem.getString(context)),
                   ],
                 ),
                 SizedBox(height: 8.0),
                 Divider(),
                 SizedBox(height: 8.0),
-                // Row 2
                 Row(
                   children: [
-                    // Bên trái - ảnh sản phẩm
                     Expanded(
                       flex: 2,
                       child: Image.network(
                         'https://lh3.googleusercontent.com/6euB1qM538WNYNFPEl1w1sNM00sTlgr0KBRqk_CeOlMFGOqq2yEBqe49HIldpfv8oVypbiwsdoQ6VMUsamiyGr_JibvyKUon85vMJtAxihuOC80xF_6le7hsx3ptiYce1N5pEGDCRNDL9I2X4kZ5AXY',
-                        width: 100.0, // Điều chỉnh kích thước ảnh theo mong muốn
+                        width: 100.0,
                         height: 100.0,
                         fit: BoxFit.cover,
                       ),
@@ -53,13 +71,35 @@ class ChiTietHoaDon  extends StatelessWidget {
 
                     SizedBox(width: 16.0),
 
-                    // Bên phải - mô tả sản phẩm
                     Expanded(
-                      flex: 3,
-                      child: Text(
-                        'Giày nam - giày Thể Thao Nam Tăng Chiều Cao Siêu Hot 2024 Bền Đẹp.',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Men Shoes - Sport Shoes',
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40.0, ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  LocaleData.totals.getString(context)+': 100\$',
+                                  style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'x2',
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
                     ),
                   ],
                 ),
@@ -71,38 +111,141 @@ class ChiTietHoaDon  extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // Row 1
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Image.network(
+                        'https://topdanhgiaaz.com/wp-content/uploads/2021/05/anh1-1.jpg',
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Men Shoes - Sport Shoes',
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40.0, ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  LocaleData.totals.getString(context)+': 100\$',
+                                  style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'x1',
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Row 2
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Image.network(
+                        'https://censor.vn/wp-content/uploads/2022/02/cac-mau-giay-nike-2-1085x800.jpg',
+                        width: 100.0,
+                        height: 100.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Men Shoes - Sport Shoes',
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 40.0, ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  LocaleData.totals.getString(context)+': 100\$',
+                                  style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'x1',
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tổng tiền hàng:'),
-                        Text('Phí ship:')
+                        Text(LocaleData.totalCost.getString(context)),
+                        Text(LocaleData.deliveryCost.getString(context))
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('\$100.00'),
-                        Text('\$10.00'),
+                        Text('$tongTien'),
+                        Text('\$10'),
                       ],
                     ),
                   ],
                 ),
                 SizedBox(height: 16.0),
 
-                // Row 2
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tổng thanh toán:',
+                      LocaleData.totalPayment.getString(context),
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '\$110.00',
+                      '\$${(parseAmount(tongTien) + parseAmount('10.0')).toStringAsFixed(2)}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -121,7 +264,7 @@ class ChiTietHoaDon  extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 SizedBox(width: 8.0),
-                Text("Voucher"),
+                Text(LocaleData.voucher.getString(context)),
                 SizedBox(width: 24.0),
 
                 Container(
@@ -134,7 +277,7 @@ class ChiTietHoaDon  extends StatelessWidget {
 
                 Expanded(
                   child: Text(
-                    'Chọn hoặc nhập mã',
+                    '.............',
                     style: TextStyle(fontSize: 16.0),
                     textAlign: TextAlign.right,
                   ),
@@ -142,8 +285,6 @@ class ChiTietHoaDon  extends StatelessWidget {
               ],
             ),
           ),
-
-
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -151,6 +292,7 @@ class ChiTietHoaDon  extends StatelessWidget {
         child: Icon(Icons.check),
         onPressed: () {},
       ),
+      bottomNavigationBar: HomeBottomNavBar(),
     );
   }
 }

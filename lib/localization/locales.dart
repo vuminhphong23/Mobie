@@ -27,6 +27,31 @@ mixin LocaleData{
   static const String logout = 'logout';
   static const String reset = 'reset';
   static const String home = 'home';
+  static const String sports = 'sports';
+  static const String man = 'man';
+  static const String woman = 'woman';
+  static const String newArrival = 'newArrival';
+  static const String add = 'add';
+  static const String search = 'search';
+  static const String productName = 'productName';
+  static const String productURL = 'productURL';
+  static const String save = 'save';
+  static const String addProduct = 'addProduct';
+  static const String editProduct = 'editProduct';
+  static const String orderDetail = 'orderDetail';
+  static const String selectedItem = 'selectedItem';
+  static const String totalCost = 'totalCost';
+  static const String deliveryCost = 'deliveryCost';
+  static const String totalPayment = 'totalPayment';
+  static const String voucher = 'voucher';
+
+
+
+
+
+
+
+
 
   static const Map<String, dynamic> EN = {
     settings: 'Settings',
@@ -50,6 +75,23 @@ mixin LocaleData{
     logout: 'Log Out',
     reset: 'Reset',
     home: 'Home',
+    sports: 'Sports',
+    man: 'Man',
+    woman: 'Woman',
+    newArrival: 'New arrival',
+    add: 'Add',
+    search: 'Search',
+    addProduct: 'Add Product',
+    productName: 'Product Name',
+    productURL: 'Product Url',
+    save: 'Save',
+    editProduct: 'Edit Product',
+    orderDetail: 'Order Details',
+    selectedItem: 'Selected Items',
+    totalCost: 'Total cost',
+    deliveryCost: 'Delivery cost',
+    totalPayment: 'Total payment',
+    voucher: 'Voucher',
   };
 
   static const Map<String, dynamic> VI = {
@@ -74,8 +116,23 @@ mixin LocaleData{
     logout: 'Đăng xuất',
     reset: 'Cài lại',
     home: 'Trang chủ',
-
-
+    sports: 'Thể thao',
+    man: 'Nam',
+    woman: 'Nữ',
+    newArrival: 'Mới về',
+    add: 'Thêm',
+    search: 'Tìm kiếm',
+    addProduct: 'Thêm sản phẩm',
+    productName: 'Tên sản phẩm',
+    productURL: 'Url sản phẩm',
+    save: 'Lưu',
+    editProduct: 'Sửa sản phẩm',
+    orderDetail: 'Chi tiết đơn hàng',
+    selectedItem: 'Tìm sản phẩm',
+    totalCost: 'Tổng tiền',
+    deliveryCost: 'Phí giao hàng',
+    totalPayment: 'Tổng thanh toán',
+    voucher: 'Mã giảm giá',
   };
 
   static const Map<String, dynamic> JA = {
@@ -100,7 +157,23 @@ mixin LocaleData{
     logout: 'ログアウト',
     reset: 'リセット',
     home: '家',
-
+    sports: 'スポーツ',
+    man: '男',
+    woman: '女性',
+    newArrival: '新参者',
+    add: '追加',
+    search: '検索',
+    addProduct: '製品の追加',
+    productName: '商品名',
+    productURL: '製品URL',
+    save: '保存',
+    editProduct: '製品の編集',
+    orderDetail: '注文詳細',
+    selectedItem: '選択されたアイテム',
+    totalCost: '総費用',
+    deliveryCost: '配送料',
+    totalPayment: 'お支払い総額',
+    voucher: 'バウチャー',
   };
 
 }
