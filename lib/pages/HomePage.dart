@@ -5,11 +5,15 @@ import 'package:qly_ban_hang/localization/locales.dart';
 import 'package:qly_ban_hang/widghets/widgets_home/HomeBottomNavBar.dart';
 import 'package:qly_ban_hang/widghets/components/MyDrawer.dart';
 
+import '../models/hoadonmodel.dart';
+import '../main.dart';
 import '../widghets/widgets_home/AutoImageSlider.dart';
 import '../widghets/widgets_home/RecentItemsWidget.dart';
 import '../widghets/widgets_home/RowItemsWidget.dart';
 
 class HomePage extends StatefulWidget {
+  final List<HoaDon> danhSachHoaDon;
+  HomePage({required this.danhSachHoaDon});
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -99,7 +103,8 @@ class _HomePageState extends State<HomePage> {
               AutoImageSlider(),
 
               SizedBox(height: 30,),
-              RowItemsWidget(),
+
+              RowItemsWidget(danhSachHoaDon: danhSachHoaDon),
               SizedBox(height: 20,),
               Container(
                 child: Text(LocaleData.recentOrders.getString(context),style: TextStyle(

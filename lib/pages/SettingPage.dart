@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+import 'package:qly_ban_hang/widghets/components/MyDrawer.dart';
 import '../localization/locales.dart';
 import '../models/Interfaces.dart';
 import '../widghets/widgets_home/HomeBottomNavBar.dart';
@@ -30,13 +31,19 @@ class _SettingsPageState extends State<SettingsPage> {
     return Consumer<UserInterface>(
         builder: (context, ui, child) {
           return Scaffold(
+            drawer: MyDrawer(),
             appBar: AppBar(
               backgroundColor: ui.appBarColor,
               title: Text(LocaleData.settings.getString(context),
-                style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold,),),
-              leading: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Ionicons.chevron_back_outline),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),),
+              leading: Builder(
+                builder: (BuildContext builderContext) {
+                  return IconButton(
+                    onPressed: () => Scaffold.of(builderContext).openDrawer(),
+                    icon: const Icon(Ionicons.apps_outline),
+                    color: Colors.white,
+                  );
+                },
               ),
               leadingWidth: 80,
             ),

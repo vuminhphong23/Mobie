@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter_localization/flutter_localization.dart';
 
 const List<MapLocale> LOCALES = [
@@ -35,6 +37,8 @@ mixin LocaleData{
   static const String search = 'search';
   static const String productName = 'productName';
   static const String productURL = 'productURL';
+  static const String productPrice = 'productPrice';
+  static const String productDes = 'productDescription';
   static const String save = 'save';
   static const String addProduct = 'addProduct';
   static const String editProduct = 'editProduct';

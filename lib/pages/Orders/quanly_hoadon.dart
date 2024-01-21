@@ -3,11 +3,14 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:intl/intl.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:qly_ban_hang/localization/locales.dart';
 import 'package:qly_ban_hang/models/Interfaces.dart';
+import 'package:qly_ban_hang/models/ordernotifier.dart';
 import 'package:qly_ban_hang/widghets/components/MyDrawer.dart';
 
+import '../../main.dart';
 import '../../models/hoadonmodel.dart';
 import '../../widghets/widgets_home/HomeBottomNavBar.dart';
 import '../../widghets/widgets_order/formnhap_hoadon.dart';
@@ -15,43 +18,14 @@ import 'chitiet_hoadon.dart';
 
 
 class QuanLyHoaDon extends StatefulWidget {
+  final List<HoaDon> danhSachHoaDon;
+  QuanLyHoaDon({required this.danhSachHoaDon});
   @override
   State<QuanLyHoaDon> createState() => _QuanLyHoaDonState();
 }
 
 class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
-  final List<HoaDon> danhSachHoaDon = [
-    HoaDon(
-      maHD : "Nike01",
-      tongTien : "\$100",
-      ngayBan : DateTime(2024, 1, 17),
-      name : "Shoe Maker",
-    ),
-    HoaDon(
-      maHD : "Nike02",
-      tongTien : "\$120",
-      ngayBan : DateTime(2024, 1, 18),
-      name : "Shoe Maker",
-    ),
-    HoaDon(
-      maHD : "Nike03",
-      tongTien : "\$150",
-      ngayBan : DateTime(2024, 1, 19),
-      name : "Shoe Maker",
-    ),
-    HoaDon(
-      maHD : "Nike04",
-      tongTien : "\$200",
-      ngayBan : DateTime(2024, 1, 20),
-      name : "Shoe Maker",
-    ),
-    HoaDon(
-      maHD : "Nike05",
-      tongTien : "\$250",
-      ngayBan : DateTime(2024, 1, 21),
-      name : "Shoe Maker",
-    ),
-  ];
+
   String selectedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
   void _showDeleteConfirmationDialog(HoaDon hd) {
@@ -85,6 +59,7 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
     setState(() {
       danhSachHoaDon.remove(hd);
     });
+    // hoaDonNotifier.deleteHoaDon(hd);
     Fluttertoast.showToast(msg: 'Invoice deleted ${hd.maHD}');
   }
 
@@ -95,7 +70,7 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
       ngayBan: DateTime.now(),
       name: name,
     );
-
+    // hoaDonNotifier.addHoaDon(newHoaDon);
     setState(() {
       danhSachHoaDon.add(newHoaDon);
     });
@@ -144,10 +119,20 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
               title: Text(
                 LocaleData.orders.getString(context),
                 style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                    color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
               ),
-              backgroundColor: Color(0xFF475269),
-              centerTitle: true,
+              leading: Builder(
+                builder: (BuildContext builderContext) {
+                  return IconButton(
+                    onPressed: () => Scaffold.of(builderContext).openDrawer(),
+                    icon: const Icon(Ionicons.apps_outline),
+                    color: Colors.white,
+                  );
+                },
+              ),
+              leadingWidth: 80,
+              backgroundColor: ui.appBarColor,
+
               actions: [
                 IconButton(
                   onPressed: () {
@@ -194,7 +179,7 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            'Date: $selectedDate',
+                            LocaleData.date.getString(context)+': $selectedDate',
                             style: TextStyle(fontSize: 18),
                           ),
                           DropdownButton<String>(
@@ -290,12 +275,12 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              color: Color(0xFF475269),
+                                              color: Colors.blue,
                                               borderRadius: BorderRadius
                                                   .circular(10),
                                             ),
                                             child: IconButton(
-                                              icon: Icon(Icons.edit),
+                                              icon: Icon(Ionicons.create_outline),
                                               iconSize: 20.0,
                                               color: Colors.white,
                                               onPressed: () {
@@ -317,12 +302,12 @@ class _QuanLyHoaDonState extends State<QuanLyHoaDon> {
                                           SizedBox(width: 10),
                                           Container(
                                             decoration: BoxDecoration(
-                                              color: Color(0xFF475269),
+                                              color: Colors.red,
                                               borderRadius: BorderRadius
                                                   .circular(10),
                                             ),
                                             child: IconButton(
-                                              icon: Icon(Icons.delete),
+                                              icon: Icon(Ionicons.trash_bin_sharp),
                                               iconSize: 20.0,
                                               color: Colors.white,
                                               onPressed: () {

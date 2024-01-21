@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:qly_ban_hang/localization/locales.dart';
 import 'package:qly_ban_hang/models/Interfaces.dart';
+import 'package:qly_ban_hang/widghets/widgets_product/product_view/product_detail.dart';
 
 import '../widghets/components/MyDrawer.dart';
 import '../widghets/widgets_home/HomeBottomNavBar.dart';
@@ -19,9 +21,6 @@ import '../widghets/widgets_product/product_view/tabBar.dart';
 // --------------- 5:50 video 18-----------
 class ProductView extends StatefulWidget {
   ProductView({super.key});
-  // static List<String> sports_name = ['Sport 0', 'Sport 1','Sport 3','Sport 04'];
-  // static List sport_url = ['assets/images/product1.png','assets/images/product1.png','assets/images/product1.png','assets/images/product1.png'];
-  // static List<double> sport_price = [10.0, 11.0,12.2,13.2];
 
   @override
   State<ProductView> createState() => _ProductViewState();
@@ -30,34 +29,34 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
 
   List<Product> sports = [
-    Product(name: 'Sport 1', ImgUrl: 'images/product3.png'),
-    Product(name: 'Sport 2', ImgUrl: 'images/product1.png'),
-    Product(name: 'Sport 3', ImgUrl: 'images/product2.png'),
+    Product(name: 'Sport 1', ImgUrl: 'images/product3.png', price: "\$100", des: 'This is description'),
+    Product(name: 'Sport 2', ImgUrl: 'images/product1.png', price: "\$100", des: 'This is description'),
+    Product(name: 'Sport 3', ImgUrl: 'images/product2.png', price: "\$100", des: 'This is description'),
   ];
 
   List<Product> man = [
-    Product(name: 'Men 1', ImgUrl: 'images/men1.png'),
-    Product(name: 'Men 2', ImgUrl: 'images/men2.png'),
-    Product(name: 'Men 3', ImgUrl: 'images/men3.png'),
-    Product(name: 'Men 4', ImgUrl: 'images/men4.png'),
+    Product(name: 'Men 1', ImgUrl: 'images/men1.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Men 2', ImgUrl: 'images/men2.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Men 3', ImgUrl: 'images/men3.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Men 4', ImgUrl: 'images/men4.png',price: "\$100", des: 'This is description'),
   ];
 
   List<Product> women = [
-    Product(name: 'Women 1', ImgUrl: 'images/woman1.png'),
-    Product(name: 'Women 2', ImgUrl: 'images/woman2.png'),
-    Product(name: 'Women 3', ImgUrl: 'images/woman3.png'),
-    Product(name: 'Women 4', ImgUrl: 'images/woman4.png'),
-    Product(name: 'Women 5', ImgUrl: 'images/woman5.png'),
+    Product(name: 'Women 1', ImgUrl: 'images/woman1.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Women 2', ImgUrl: 'images/woman2.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Women 3', ImgUrl: 'images/woman3.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Women 4', ImgUrl: 'images/woman4.png',price: "\$100", des: 'This is description'),
+    Product(name: 'Women 5', ImgUrl: 'images/woman5.png',price: "\$100", des: 'This is description'),
   ];
 
   List<Product> new_arr = [
-    Product(name: 'New 1', ImgUrl: 'images/new1.png'),
-    Product(name: 'New 2', ImgUrl: 'images/new2.png'),
-    Product(name: 'New 3', ImgUrl: 'images/new3.png'),
-    Product(name: 'New 4', ImgUrl: 'images/new4.png'),
+    Product(name: 'New 1', ImgUrl: 'images/new1.png',price: "\$100", des: 'This is description'),
+    Product(name: 'New 2', ImgUrl: 'images/new2.png',price: "\$100", des: 'This is description'),
+    Product(name: 'New 3', ImgUrl: 'images/new3.png',price: "\$100", des: 'This is description'),
+    Product(name: 'New 4', ImgUrl: 'images/new4.png',price: "\$100", des: 'This is description'),
   ];
 
-  List<Product> allProducts = [];
+  final List<Product> allProducts = [];
   late List<Product> _originalProList;
   @override
   void initState() {
@@ -107,8 +106,8 @@ class _ProductViewState extends State<ProductView> {
   void searchProduct(String query) {
     setState(() {
       allProducts.clear();
-      allProducts = (sports + man).where((hd) =>
-          hd.name.toLowerCase().contains(query.toLowerCase())).toList();
+      allProducts.addAll(_originalProList.where((hd) =>
+          hd.name.toLowerCase().contains(query.toLowerCase())));
       if (allProducts.isEmpty) {
         isSearching = false;
       }
@@ -150,8 +149,8 @@ class _ProductViewState extends State<ProductView> {
                         child: TextField(
                           controller: searchController,
                           decoration: InputDecoration(
-                            hintText: 'Nhap ten san pham',
-                            hintStyle: TextStyle(color: Colors.white)
+                              hintText: 'Nhap ten san pham',
+                              hintStyle: TextStyle(color: Colors.white)
 
                           ),
                           onChanged: (value) {
@@ -218,63 +217,97 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: sports.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                child: SizedBox(
-                                  height: 100,
-                                  child: Center(
-                                    child: ListTile(
-                                      title: Text(
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailPage(
+                                            name: sports[index].name,
+                                            url: sports[index].ImgUrl,
+                                            price: sports[index].price,
+                                            des: sports[index].des,
+
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  child: SizedBox(
+                                    height: 100,
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(
                                           sports[index].name,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      leading: SizedBox(
-                                        child: Image.asset(sports[index].ImgUrl,
-                                          fit: BoxFit.fill,),
-                                      ),
-                                      trailing: SizedBox(
-                                        width: 70,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                final updatedProduct = await Navigator
-                                                    .of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditProductPage(
-                                                                product: sports[index])));
-                                                if (updatedProduct != null) {
+                                        leading: SizedBox(
+                                          child: Image.asset(sports[index].ImgUrl,
+                                            fit: BoxFit.fill,),
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 90,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  final updatedProduct = await Navigator
+                                                      .of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProductPage(
+                                                                  product: sports[index])));
+                                                  if (updatedProduct != null) {
+                                                    setState(() {
+                                                      sports[index] =
+                                                          updatedProduct;
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.edit, size: 20,color: Colors.white,)),
+                                              ),
+
+                                              InkWell(
+                                                onTap: () {
                                                   setState(() {
-                                                    sports[index] =
-                                                        updatedProduct;
+                                                    // sports.removeAt(index);
+                                                    _showDeleteConfirmationDialog(sports[index], sports);
                                                   });
-                                                }
-                                              },
-                                              child: Icon(Icons.edit),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  // sports.removeAt(index);
-                                                  _showDeleteConfirmationDialog(sports[index], sports);
-                                                });
-                                              },
-                                              child: Icon(Icons.delete),
-                                            )
-                                          ],
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.delete, size: 20,color: Colors.white,)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
+                                  elevation: 5,
+                                  color: Color(0xFFF5F9FD),
+                                  margin: EdgeInsets.all(10),
                                 ),
-                                elevation: 5,
-                                color: Color(0xFFF5F9FD),
-                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -302,61 +335,100 @@ class _ProductViewState extends State<ProductView> {
                     ),
 
 
+
+
                     Column(
                       children: [
                         Expanded(
                           child: ListView.builder(
                             itemCount: man.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                child: SizedBox(
-                                  height: 100,
-                                  child: Center(
-                                    child: ListTile(
-                                      title: Text(man[index].name),
-                                      leading: SizedBox(
-                                        child: Image.asset(
-                                          man[index].ImgUrl, fit: BoxFit.fill,),
-                                      ),
-                                      trailing: SizedBox(
-                                        width: 70,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                final updatedProduct = await Navigator
-                                                    .of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditProductPage(
-                                                                product: man[index])));
-                                                if (updatedProduct != null) {
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailPage(
+                                            name: new_arr[index].name,
+                                            url: new_arr[index].ImgUrl,
+                                            price: new_arr[index].price,
+                                            des: new_arr[index].des,
+
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  child: SizedBox(
+                                    height: 100,
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(man[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),),
+                                        leading: SizedBox(
+                                          child: Image.asset(
+                                            man[index].ImgUrl, fit: BoxFit.fill,),
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 90,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  final updatedProduct = await Navigator
+                                                      .of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProductPage(
+                                                                  product: man[index])));
+                                                  if (updatedProduct != null) {
+                                                    setState(() {
+                                                      man[index] = updatedProduct;
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.edit, size: 20,color: Colors.white,)),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
                                                   setState(() {
-                                                    man[index] = updatedProduct;
+                                                    _showDeleteConfirmationDialog(man[index], man);
                                                   });
-                                                }
-                                              },
-                                              child: Icon(Icons.edit),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  _showDeleteConfirmationDialog(man[index], man);
-                                                });
-                                              },
-                                              child: Icon(Icons.delete),
-                                            )
-                                          ],
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.delete, size: 20,color: Colors.white,)),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
+                                  elevation: 5,
+                                  color: Color(0xFFF5F9FD),
+                                  margin: EdgeInsets.all(10),
                                 ),
-                                elevation: 5,
-                                color: Color(0xFFF5F9FD),
-                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -388,56 +460,93 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: women.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                child: SizedBox(
-                                  height: 100,
-                                  child: Center(
-                                    child: ListTile(
-                                      title: Text(women[index].name),
-                                      leading: SizedBox(
-                                        child: Image.asset(women[index].ImgUrl,
-                                          fit: BoxFit.fill,),
-                                      ),
-                                      trailing: SizedBox(
-                                        width: 70,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                final updatedProduct = await Navigator
-                                                    .of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditProductPage(
-                                                                product: women[index])));
-                                                if (updatedProduct != null) {
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailPage(
+                                            name: women[index].name,
+                                            url: women[index].ImgUrl,
+                                            price: women[index].price,
+                                            des: women[index].des,
+
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  child: SizedBox(
+                                    height: 100,
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(women[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),),
+                                        leading: SizedBox(
+                                          child: Image.asset(women[index].ImgUrl,
+                                            fit: BoxFit.fill,),
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 90,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  final updatedProduct = await Navigator
+                                                      .of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProductPage(
+                                                                  product: women[index])));
+                                                  if (updatedProduct != null) {
+                                                    setState(() {
+                                                      women[index] =
+                                                          updatedProduct;
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.edit, size: 20,color: Colors.white,)),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
                                                   setState(() {
-                                                    women[index] =
-                                                        updatedProduct;
+                                                    _showDeleteConfirmationDialog(women[index], women);
                                                   });
-                                                }
-                                              },
-                                              child: Icon(Icons.edit),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  _showDeleteConfirmationDialog(women[index], women);
-                                                });
-                                              },
-                                              child: Icon(Icons.delete),
-                                            )
-                                          ],
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.delete, size: 20,color: Colors.white,)),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
+                                  elevation: 5,
+                                  color: Color(0xFFF5F9FD),
+                                  margin: EdgeInsets.all(10),
                                 ),
-                                elevation: 5,
-                                color: Color(0xFFF5F9FD),
-                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -470,57 +579,94 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: new_arr.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                child: SizedBox(
-                                  height: 100,
-                                  child: Center(
-                                    child: ListTile(
-                                      title: Text(new_arr[index].name),
-                                      leading: SizedBox(
-                                        child: Image.asset(
-                                          new_arr[index].ImgUrl,
-                                          fit: BoxFit.fill,),
-                                      ),
-                                      trailing: SizedBox(
-                                        width: 70,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                final updatedProduct = await Navigator
-                                                    .of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditProductPage(
-                                                                product: new_arr[index])));
-                                                if (updatedProduct != null) {
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailPage(
+                                            name: new_arr[index].name,
+                                            url: new_arr[index].ImgUrl,
+                                            price: new_arr[index].price,
+                                            des: new_arr[index].des,
+
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  child: SizedBox(
+                                    height: 100,
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(new_arr[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),),
+                                        leading: SizedBox(
+                                          child: Image.asset(
+                                            new_arr[index].ImgUrl,
+                                            fit: BoxFit.fill,),
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 90,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  final updatedProduct = await Navigator
+                                                      .of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditProductPage(
+                                                                  product: new_arr[index])));
+                                                  if (updatedProduct != null) {
+                                                    setState(() {
+                                                      new_arr[index] =
+                                                          updatedProduct;
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.edit, size: 20,color: Colors.white,)),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
                                                   setState(() {
-                                                    new_arr[index] =
-                                                        updatedProduct;
+                                                    _showDeleteConfirmationDialog(new_arr[index], new_arr);
                                                   });
-                                                }
-                                              },
-                                              child: Icon(Icons.edit),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  _showDeleteConfirmationDialog(new_arr[index], new_arr);
-                                                });
-                                              },
-                                              child: Icon(Icons.delete),
-                                            )
-                                          ],
+                                                },
+                                                child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      borderRadius: BorderRadius
+                                                          .circular(10),
+                                                    ),
+                                                    child: Icon(Icons.delete, size: 20,color: Colors.white,)),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
+                                  elevation: 5,
+                                  color: Color(0xFFF5F9FD),
+                                  margin: EdgeInsets.all(10),
                                 ),
-                                elevation: 5,
-                                color: Color(0xFFF5F9FD),
-                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
