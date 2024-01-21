@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:qly_ban_hang/localization/locales.dart';
 import 'package:qly_ban_hang/models/Interfaces.dart';
@@ -56,6 +57,63 @@ class _ProductViewState extends State<ProductView> {
     Product(name: 'New 4', ImgUrl: 'images/new4.png'),
   ];
 
+  List<Product> allProducts = [];
+  late List<Product> _originalProList;
+  @override
+  void initState() {
+    super.initState();
+    // Combine both lists into a single list
+    allProducts.addAll(sports);
+    allProducts.addAll(man);
+    _originalProList = List.from(allProducts);
+  }
+
+  void _showDeleteConfirmationDialog(Product pd, List<Product> chosen_product) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this product?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteProduct(pd,chosen_product);
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _deleteProduct(Product hd,List<Product> chosen_product) {
+    setState(() {
+      chosen_product.remove(hd);
+      allProducts.remove(hd);
+    });
+    Fluttertoast.showToast(msg: 'Deleted product ${hd.name}');
+  }
+
+  TextEditingController searchController = TextEditingController();
+  bool isSearching = false;
+  void searchProduct(String query) {
+    setState(() {
+      allProducts.clear();
+      allProducts = (sports + man).where((hd) =>
+          hd.name.toLowerCase().contains(query.toLowerCase())).toList();
+      if (allProducts.isEmpty) {
+        isSearching = false;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +126,43 @@ class _ProductViewState extends State<ProductView> {
                 backgroundColor: ui.appBarColor,
                 title: Text(
                   LocaleData.products.getString(context), style: TextStyle(color: Colors.white),),
-              ),
 
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () async{
-              //     final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddProductPage()));
-              //     if(result != null){
-              //       setState(() {
-              //         sports.add(result);
-              //       });
-              //     }
-              //   },
-              //   child: Icon(Icons.add),
-              //   // backgroundColor: Theme.of(context).primaryColorDark,
-              // ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (isSearching) {
+                          isSearching = false;
+                          allProducts.clear();
+                          allProducts.addAll(_originalProList);
+                        } else {
+                          isSearching = true;
+                        }
+                      });
+                    },
+                    icon: Icon(Icons.search, color: Colors.white),
+                  ),
+                  if (isSearching)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 200.0,
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Nhap ten san pham',
+                            hintStyle: TextStyle(color: Colors.white)
+
+                          ),
+                          onChanged: (value) {
+                            searchProduct(value);
+                          },
+                          onSubmitted: (value) {},
+                        ),
+                      ),
+                    ),
+                ],
+              ),
 
 
               drawer: MyDrawer(),
@@ -102,7 +183,7 @@ class _ProductViewState extends State<ProductView> {
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             SizedBox(height: 16),
-                            SearchContainer(text: '', showBorder: true),
+                            // SearchContainer(text: '', showBorder: true),
                             SizedBox(height: 16),
                             Banner_slider()
 
@@ -137,12 +218,18 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: sports.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return Card(
                                 child: SizedBox(
                                   height: 100,
                                   child: Center(
                                     child: ListTile(
-                                      title: Text(sports[index].name),
+                                      title: Text(
+                                          sports[index].name,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       leading: SizedBox(
                                         child: Image.asset(sports[index].ImgUrl,
                                           fit: BoxFit.fill,),
@@ -173,7 +260,8 @@ class _ProductViewState extends State<ProductView> {
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
-                                                  sports.removeAt(index);
+                                                  // sports.removeAt(index);
+                                                  _showDeleteConfirmationDialog(sports[index], sports);
                                                 });
                                               },
                                               child: Icon(Icons.delete),
@@ -184,8 +272,9 @@ class _ProductViewState extends State<ProductView> {
                                     ),
                                   ),
                                 ),
-                                // elevation: 5,
-                                // margin: EdgeInsets.all(10),
+                                elevation: 5,
+                                color: Color(0xFFF5F9FD),
+                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -198,6 +287,7 @@ class _ProductViewState extends State<ProductView> {
                             if (result != null) {
                               setState(() {
                                 sports.add(result);
+                                allProducts.add(result);
                               });
                             }
                           },
@@ -218,7 +308,7 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: man.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return Card(
                                 child: SizedBox(
                                   height: 100,
                                   child: Center(
@@ -253,7 +343,7 @@ class _ProductViewState extends State<ProductView> {
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
-                                                  man.removeAt(index);
+                                                  _showDeleteConfirmationDialog(man[index], man);
                                                 });
                                               },
                                               child: Icon(Icons.delete),
@@ -264,8 +354,9 @@ class _ProductViewState extends State<ProductView> {
                                     ),
                                   ),
                                 ),
-                                // elevation: 5,
-                                // margin: EdgeInsets.all(10),
+                                elevation: 5,
+                                color: Color(0xFFF5F9FD),
+                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -278,6 +369,7 @@ class _ProductViewState extends State<ProductView> {
                             if (result != null) {
                               setState(() {
                                 man.add(result);
+                                allProducts.add(result);
                               });
                             }
                           },
@@ -296,7 +388,7 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: women.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return Card(
                                 child: SizedBox(
                                   height: 100,
                                   child: Center(
@@ -332,7 +424,7 @@ class _ProductViewState extends State<ProductView> {
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
-                                                  women.removeAt(index);
+                                                  _showDeleteConfirmationDialog(women[index], women);
                                                 });
                                               },
                                               child: Icon(Icons.delete),
@@ -343,8 +435,9 @@ class _ProductViewState extends State<ProductView> {
                                     ),
                                   ),
                                 ),
-                                // elevation: 5,
-                                // margin: EdgeInsets.all(10),
+                                elevation: 5,
+                                color: Color(0xFFF5F9FD),
+                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -358,6 +451,7 @@ class _ProductViewState extends State<ProductView> {
                             if (result != null) {
                               setState(() {
                                 women.add(result);
+                                allProducts.add(result);
                               });
                             }
                           },
@@ -376,7 +470,7 @@ class _ProductViewState extends State<ProductView> {
                           child: ListView.builder(
                             itemCount: new_arr.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return Card(
                                 child: SizedBox(
                                   height: 100,
                                   child: Center(
@@ -413,7 +507,7 @@ class _ProductViewState extends State<ProductView> {
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
-                                                  new_arr.removeAt(index);
+                                                  _showDeleteConfirmationDialog(new_arr[index], new_arr);
                                                 });
                                               },
                                               child: Icon(Icons.delete),
@@ -424,8 +518,9 @@ class _ProductViewState extends State<ProductView> {
                                     ),
                                   ),
                                 ),
-                                // elevation: 5,
-                                // margin: EdgeInsets.all(10),
+                                elevation: 5,
+                                color: Color(0xFFF5F9FD),
+                                margin: EdgeInsets.all(10),
                               );
                             },
                           ),
@@ -438,11 +533,11 @@ class _ProductViewState extends State<ProductView> {
                             if (result != null) {
                               setState(() {
                                 new_arr.add(result);
+                                allProducts.add(result);
                               });
                             }
                           },
-                          label: Text('Add', style: TextStyle(color: Colors
-                              .white, fontSize: 20),),
+                          label: Text('Add', style: TextStyle(color: Colors.white, fontSize: 20),),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                           ),
